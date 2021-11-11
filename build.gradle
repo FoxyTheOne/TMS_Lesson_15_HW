@@ -1,25 +1,191 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:4.2.2"
+plugins {
+    id 'com.android.application'
+}
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+android {
+
+
+//  В коде будут доступен весь функционал API FRAMEWORK характерный для API 31 - Android 12
+    compileSdkVersion 31
+//  Это версия компиляторов (aapt, dx, компилятор renderscript и т. д.),
+//  которые вы хотите использовать. Для каждого уровня API существует соответствие.
+    buildToolsVersion "30.0.3"
+
+// Номера версий приложения, а также требования к версии Android
+    defaultConfig {
+//      Пакет приложения
+        applicationId "com.omisoft.myapplication"
+//      Минимальная версия Андроид, какая будет поддерживаться в приложении (API 19 - Android 4.4)
+        minSdkVersion 19
+//      Максимальная версия Андроид, какая будет поддерживаться в приложении (API 31 - Android 12). Не может быть выше значения compileSdkVersion
+        targetSdkVersion 31
+//      Версия кода/билда/APК, который отличается от предыдущего. Этот номер не отображается для юзера.
+        versionCode 1
+//      Номер приложения, который видим для пользователя в Google Play/App Settings
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+//          При значении "true" - уменшает размер APK (Файл приложения) за счет игнорирования кода
+//          из библиотек которые не используються
+            minifyEnabled true
+//          При значении "true" - уменшает размер APK (Файл приложения) за счет игнорирования неиспользуемых ресурсов,
+//          в том числе из библиотек
+            shrinkResources true
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//          Создаем филду BASE_URL в файле BuildConfig со значением "debug_base_url" для сборки debug
+            buildConfigField "String", "BASE_URL", "\"https://debug\""
+            buildConfigField "String", "BASE_URL_SECOND", "\"https://debug-second\""
+            buildConfigField "boolean", "IS_MINIFIED", "true"
+        }
+
+        release {
+//          При значении "true" - уменшает размер APK (Файл приложения) за счет игнорирования кода
+//          из библиотек которые не используються
+            minifyEnabled true
+//          При значении "true" - уменшает размер APK (Файл приложения) за счет игнорирования неиспользуемых ресурсов,
+//          в том числе из библиотек
+            shrinkResources true
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//          Создаем филду BASE_URL в файле BuildConfig со значением "debug_base_url" для сборки release
+            buildConfigField "String", "BASE_URL", "\"release_base_url\""
+        }
+
+        homeworkType1 {
+            initWith debug
+//          При значении "true" - уменшает размер APK (Файл приложения) за счет игнорирования кода
+//          из библиотек которые не используються
+            minifyEnabled true
+//          При значении "true" - уменшает размер APK (Файл приложения) за счет игнорирования неиспользуемых ресурсов,
+//          в том числе из библиотек
+            shrinkResources true
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//          Создаем филду BASE_URL в файле BuildConfig со значением "debug_base_url" для сборки debug
+            buildConfigField "String", "BUILD_TYPE", "\"homeworkType1\""
+            buildConfigField "int", "VERSION_CODE", "1"
+            buildConfigField "boolean", "IS_MINIFIED", "true"
+        }
+
+        homeworkType2 {
+            initWith debug
+//          При значении "true" - уменшает размер APK (Файл приложения) за счет игнорирования кода
+//          из библиотек которые не используються
+            minifyEnabled false
+//          При значении "true" - уменшает размер APK (Файл приложения) за счет игнорирования неиспользуемых ресурсов,
+//          в том числе из библиотек
+            shrinkResources false
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//          Создаем филду BASE_URL в файле BuildConfig со значением "debug_base_url" для сборки debug
+            buildConfigField "String", "BUILD_TYPE", "\"homeworkType2\""
+            buildConfigField "int", "VERSION_CODE", "2"
+            buildConfigField "boolean", "IS_M   INIFIED", "false"
+        }
+
+        /**
+         * Lesson02, HW (step 1): Создать своих 2 билд типа, внутри создать три buildConfigField:
+         *
+         * BUILD_TYPE, типа String, со значением передать название билд типа
+         * VERSION_CODE, типа int, произвольное значение
+         * IS_MINIFIED, типа boolean, произвольное значение (true, false)
+         *
+         * При создании buildConfigField, независимо от типа, значение мы все равно заключаем в скобки. Пример: buildConfigField "boolean", "IS_TRUE", "true"
+         */
+        homeworkByAlinaType1 {
+            initWith debug // Билд homeworkByAlinaType1 унаследует все конфигурации от BuildType debug
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // ProGuard - утилита, которая удаляет из готового кода неиспользуемые фрагменты и изменяет имена переменных и методов для усложнения реверс-инжиниринга приложения. Также позволяет уменьшить размер загружаемых на устройство файлов.
+            // proguard-android.txt — это дефолтный файл конфигурации, поставляемый с SDK. Экспериментаторы могут заменить его на proguard-android-optimize.txt.
+            // proguard-rules.pro — файл, в который предлагается писать свои директивы для ProGuard. Изначально пустой, находится в каталоге приложения.
+            // Вы можете включить ProGuard не только для release, но и для debug версий. Это очень полезно, потому что поведение приложения с включенным ProGuard может отличаться от приложения с выключенным ProGuard совершенно неожиданным образом.
+            // За включение ProGuard отвечает директива minifyEnabled.
+
+            minifyEnabled true // "true" - чтобы в собраный файл не подтягивались библиотеки (и др. ресурсы), которые мы не используем
+            shrinkResources true // "true" - чтобы в собраный файл не подтягивались библиотеки (и др. ресурсы), которые мы не используем
+
+            // Создаём три buildConfigField:
+            buildConfigField "String", "BUILD_TYPE", "\"homeworkByAlinaType1\"" // "Тип (String, int, boolean etc.)", "Какой ключ", "Оглашаем переменную (если String - добавляем кавычки \"...\")"
+            buildConfigField "int", "VERSION_CODE", "15"
+            buildConfigField "boolean", "IS_MINIFIED", "true"
+        }
+
+        homeworkByAlinaType2 {
+            initWith debug // Билд homeworkByAlinaType1 унаследует все конфигурации от BuildType debug
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // ProGuard - утилита, которая удаляет из готового кода неиспользуемые фрагменты и изменяет имена переменных и методов для усложнения реверс-инжиниринга приложения. Также позволяет уменьшить размер загружаемых на устройство файлов.
+            // proguard-android.txt — это дефолтный файл конфигурации, поставляемый с SDK. Экспериментаторы могут заменить его на proguard-android-optimize.txt.
+            // proguard-rules.pro — файл, в который предлагается писать свои директивы для ProGuard. Изначально пустой, находится в каталоге приложения.
+            // Вы можете включить ProGuard не только для release, но и для debug версий. Это очень полезно, потому что поведение приложения с включенным ProGuard может отличаться от приложения с выключенным ProGuard совершенно неожиданным образом.
+            // За включение ProGuard отвечает директива minifyEnabled.
+
+            minifyEnabled true // "true" - чтобы в собраный файл не подтягивались библиотеки (и др. ресурсы), которые мы не используем
+            shrinkResources true // "true" - чтобы в собраный файл не подтягивались библиотеки (и др. ресурсы), которые мы не используем
+
+            // Создаём три buildConfigField:
+            buildConfigField "String", "BUILD_TYPE", "\"homeworkByAlinaType2\"" // "Тип (String, int, boolean etc.)", "Какой ключ", "Оглашаем переменную (если String - добавляем кавычки \"...\")"
+            buildConfigField "int", "VERSION_CODE", "16"
+            buildConfigField "boolean", "IS_MINIFIED", "true"
+        }
+
+        /**
+         * Lesson02, HW (step 3):
+         * Внутри скопа buildTypes есть код отвечающий за формирование названия APK файла при сборке билда
+         *
+         * Переделать код формирования названия, чтобы получить следующую структуру названия:
+         * «Build Type»-«from»-«ваше имя»-«дата».apk
+         *
+         * Изучить код и собрать билд
+         * Сборка билда: выбираем в главном меню Build -> Build Bundles/APK(s) -> Build APK(s)
+         */
+        applicationVariants.all { variant ->
+            variant.outputs.all { output ->
+
+                def creatorName = "Alina"
+                // начало названия
+                def APP_TITLE = "My Application"
+                // символ каким разделяем слова в названии
+                def SEPARATOR = "_"
+
+                def FROM = "from"
+                // какой билд (зависит от того, какой выбрали в Active Build Variant)
+                def buildType = variant.buildType.name
+                // versionName, который мы указали в defaultConfig -> versionName
+                def version = variant.versionName
+                // инициализация объекта даты
+                def date = new Date()
+                // указываем формат даты типа "09.11.21"
+                def formattedDate = date.format('dd.MM.yy')
+
+                // объединяем все в одну строчку
+                // «Build Type»-«from»-«ваше имя»-«дата».apk
+                def apkName = buildType + SEPARATOR + FROM + SEPARATOR + creatorName + SEPARATOR + formattedDate + ".apk"
+
+                // создем APK файл с названием $apkName
+                outputFileName = new File(apkName)
+            }
+        }
+    }
+
+    compileOptions {
+//      Языковой уровень исходного кода java.
+        sourceCompatibility JavaVersion.VERSION_1_8
+
+//      Версия сгенерированного байт-кода Java.
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.5.0-alpha05'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
